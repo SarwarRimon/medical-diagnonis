@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediDiagnose - Medical Expert System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- LEFT SIDEBAR: SYMPTOM SELECTION -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-stethoscope"></i>
+            <h1>MediDiagnose</h1>
+        </div>
+
+        <div class="disclaimer">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>This is a demonstration system. Always consult a healthcare professional for medical advice.</span>
+        </div>
+
+        <div id="symptomForm">
+            <h3 class="section-title">Select Your Symptoms</h3>
+
+            <!-- General Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-user"></i>
+                    <span>General Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="fatigue">
+                        <span class="checkmark"></span>
+                        Fatigue
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="fever">
+                        <span class="checkmark"></span>
+                        Fever
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="weight_loss">
+                        <span class="checkmark"></span>
+                        Weight Loss
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="loss_of_appetite">
+                        <span class="checkmark"></span>
+                        Loss of Appetite
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="night_sweats">
+                        <span class="checkmark"></span>
+                        Night Sweats
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="chills">
+                        <span class="checkmark"></span>
+                        Chills
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="body_aches">
+                        <span class="checkmark"></span>
+                        Body Aches
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="weakness">
+                        <span class="checkmark"></span>
+                        Weakness
+                    </label>
+                </div>
+            </div>
+
+            <!-- Digestive Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-stomach"></i>
+                    <span>Digestive Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="nausea_and_vomiting">
+                        <span class="checkmark"></span>
+                        Nausea and Vomiting
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="diarrhea">
+                        <span class="checkmark"></span>
+                        Diarrhea
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="constipation">
+                        <span class="checkmark"></span>
+                        Constipation
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="bloating_and_gas">
+                        <span class="checkmark"></span>
+                        Bloating and Gas
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="heartburn">
+                        <span class="checkmark"></span>
+                        Heartburn
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="difficulty_swallowing">
+                        <span class="checkmark"></span>
+                        Difficulty Swallowing
+                    </label>
+                </div>
+            </div>
+
+            <!-- Abdominal Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-hand-holding-medical"></i>
+                    <span>Abdominal Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="pain_in_the_belly">
+                        <span class="checkmark"></span>
+                        Pain in the Belly
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="severe_pain_in_the_belly">
+                        <span class="checkmark"></span>
+                        Severe Pain in the Belly
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="swelling_of_the_abdomen">
+                        <span class="checkmark"></span>
+                        Swelling of the Abdomen
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="loud_bowel_sounds">
+                        <span class="checkmark"></span>
+                        Loud Bowel Sounds
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="cramping">
+                        <span class="checkmark"></span>
+                        Cramping
+                    </label>
+                </div>
+            </div>
+
+            <!-- Stool/Blood Related -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-droplet"></i>
+                    <span>Stool & Blood Related</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="blood_in_your_stool">
+                        <span class="checkmark"></span>
+                        Blood in Stool
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="dark_colored_stools">
+                        <span class="checkmark"></span>
+                        Dark Colored Stools
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="low_red_blood_cell_counts">
+                        <span class="checkmark"></span>
+                        Low Red Blood Cell Counts (Anemia)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="pale_stools">
+                        <span class="checkmark"></span>
+                        Pale Stools
+                    </label>
+                </div>
+            </div>
+
+            <!-- Respiratory Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-lungs"></i>
+                    <span>Respiratory Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="cough">
+                        <span class="checkmark"></span>
+                        Cough
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="shortness_of_breath">
+                        <span class="checkmark"></span>
+                        Shortness of Breath
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="chest_pain">
+                        <span class="checkmark"></span>
+                        Chest Pain
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="wheezing">
+                        <span class="checkmark"></span>
+                        Wheezing
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="sore_throat">
+                        <span class="checkmark"></span>
+                        Sore Throat
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="runny_nose">
+                        <span class="checkmark"></span>
+                        Runny Nose
+                    </label>
+                </div>
+            </div>
+
+            <!-- Skin & Appearance -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-hand-dots"></i>
+                    <span>Skin & Appearance</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="yellowing_of_skin_and_eyes">
+                        <span class="checkmark"></span>
+                        Yellowing of Skin/Eyes (Jaundice)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="skin_rash">
+                        <span class="checkmark"></span>
+                        Skin Rash
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="itchy_skin">
+                        <span class="checkmark"></span>
+                        Itchy Skin
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="pale_skin">
+                        <span class="checkmark"></span>
+                        Pale Skin
+                    </label>
+                </div>
+            </div>
+
+            <!-- Neurological Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Neurological Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="headache">
+                        <span class="checkmark"></span>
+                        Headache
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="dizziness">
+                        <span class="checkmark"></span>
+                        Dizziness
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="confusion">
+                        <span class="checkmark"></span>
+                        Confusion
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="numbness_or_tingling">
+                        <span class="checkmark"></span>
+                        Numbness or Tingling
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="blurred_vision">
+                        <span class="checkmark"></span>
+                        Blurred Vision
+                    </label>
+                </div>
+            </div>
+
+            <!-- Urinary Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-droplet"></i>
+                    <span>Urinary Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="frequent_urination">
+                        <span class="checkmark"></span>
+                        Frequent Urination
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="painful_urination">
+                        <span class="checkmark"></span>
+                        Painful Urination
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="blood_in_urine">
+                        <span class="checkmark"></span>
+                        Blood in Urine
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="dark_urine">
+                        <span class="checkmark"></span>
+                        Dark Urine
+                    </label>
+                </div>
+            </div>
+
+            <!-- Musculoskeletal Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-bone"></i>
+                    <span>Musculoskeletal Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="joint_pain">
+                        <span class="checkmark"></span>
+                        Joint Pain
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="muscle_pain">
+                        <span class="checkmark"></span>
+                        Muscle Pain
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="back_pain">
+                        <span class="checkmark"></span>
+                        Back Pain
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="stiff_neck">
+                        <span class="checkmark"></span>
+                        Stiff Neck
+                    </label>
+                </div>
+            </div>
+
+            <!-- Other Symptoms -->
+            <div class="symptom-category">
+                <div class="category-header">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>Other Symptoms</span>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="mouth_sores">
+                        <span class="checkmark"></span>
+                        Mouth Sores
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="swollen_lymph_nodes">
+                        <span class="checkmark"></span>
+                        Swollen Lymph Nodes
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="symptom" value="excessive_thirst">
+                        <span class="checkmark"></span>
+                        Excessive Thirst
+                    </label>
+                </div>
+            </div>
+
+            <div class="selected-count" id="selectedCount">
+                <i class="fa-solid fa-check-circle"></i>
+                <span>0 symptoms selected</span>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button id="diagnoseBtn" class="btn-primary" onclick="runDiagnosis()" style="flex: 2;">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Symptoms
+                </button>
+                <button class="btn-primary btn-secondary" onclick="resetForm()" style="flex: 1;">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- RIGHT AREA: RESULTS -->
+    <main class="results-area" id="resultsContainer">
+        <!-- Initial State -->
+        <div class="hero-text" id="initialState">
+            <i class="fa-solid fa-heartbeat"></i>
+            <h2>Medical Symptom Analyzer</h2>
+            <p>Select your symptoms from the checklist on the left and let our expert system analyze potential conditions.</p>
+        </div>
+
+        <!-- Dynamic Content will be injected here -->
+        <div id="dynamicContent" style="display:none;"></div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

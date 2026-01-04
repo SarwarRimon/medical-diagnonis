@@ -13,11 +13,33 @@ function updateSelectedCount() {
     }
 }
 
+// Toggle symptom category dropdown
+function toggleCategory(event) {
+    const header = event.currentTarget;
+    const category = header.closest('.symptom-category');
+    
+    // Close all other categories
+    document.querySelectorAll('.symptom-category').forEach(cat => {
+        if (cat !== category) {
+            cat.classList.remove('active');
+        }
+    });
+    
+    // Toggle current category
+    category.classList.toggle('active');
+}
+
 // Attach event listeners to checkboxes
 document.addEventListener('DOMContentLoaded', () => {
     const checkboxes = document.querySelectorAll('input[name="symptom"]');
     checkboxes.forEach(cb => {
         cb.addEventListener('change', updateSelectedCount);
+    });
+    
+    // Attach click listeners to category headers
+    const categoryHeaders = document.querySelectorAll('.category-header');
+    categoryHeaders.forEach(header => {
+        header.addEventListener('click', toggleCategory);
     });
 });
 
@@ -25,6 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function resetForm() {
     const checkboxes = document.querySelectorAll('input[name="symptom"]');
     checkboxes.forEach(cb => cb.checked = false);
+    
+    // Close all dropdowns
+    document.querySelectorAll('.symptom-category').forEach(cat => {
+        cat.classList.remove('active');
+    });
     
     updateSelectedCount();
     
@@ -38,6 +65,11 @@ function runDiagnosis() {
     const btn = document.getElementById("diagnoseBtn");
     const initialState = document.getElementById("initialState");
     const dynamicContent = document.getElementById("dynamicContent");
+    
+    // Close all open dropdowns
+    document.querySelectorAll('.symptom-category').forEach(cat => {
+        cat.classList.remove('active');
+    });
     
     // Gather selected symptoms
     const checkboxes = document.querySelectorAll('input[name="symptom"]:checked');
@@ -90,13 +122,13 @@ function runDiagnosis() {
         }
         
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Symptoms';
+        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Analyze';
     })
     .catch(error => {
         console.error("Error:", error);
         renderError(error.message);
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Symptoms';
+        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Analyze';
     });
 }
 
@@ -335,24 +367,34 @@ function renderResults(results, selectedSymptoms) {
     };
     
     // Sort results by confidence (highest first)
-    results.sort((a, b) => b.confidence - a.confidence);
+    results.sort((a, b) => {
+        const diseaseA = a.disease;
+        const diseaseB = b.disease;
+        
+        const infoA = diseaseInfo[diseaseA] || { urgency: 'low' };
+        const infoB = diseaseInfo[diseaseB] || { urgency: 'low' };
+        
+        // First sort by urgency (high > medium > low)
+        const urgencyOrder = { high: 3, medium: 2, low: 1 };
+        const urgencyDiff = (urgencyOrder[infoB.urgency] || 0) - (urgencyOrder[infoA.urgency] || 0);
+        
+        if (urgencyDiff !== 0) {
+            return urgencyDiff;
+        }
+        
+        // Then sort by confidence (highest first)
+        return b.confidence - a.confidence;
+    });
     
     let html = `
-        <div class="results-header">
-            <div>
-                <h2>Analysis Results</h2>
-                <p class="results-count">Found ${results.length} potential condition${results.length > 1 ? 's' : ''} based on ${selectedSymptoms.length} symptom${selectedSymptoms.length > 1 ? 's' : ''}</p>
+        <div class="results-container">
+            <div class="results-summary">
+                <h3>Analysis Results</h3>
+                <p>Found <strong>${results.length}</strong> potential condition${results.length > 1 ? 's' : ''} based on your <strong>${selectedSymptoms.length}</strong> symptom${selectedSymptoms.length > 1 ? 's' : ''}</p>
+                <div class="matched-symptoms">
+                    ${selectedSymptoms.map(s => `<span class="symptom-badge">${formatSymptomName(s)}</span>`).join('')}
+                </div>
             </div>
-        </div>
-        
-        <div class="selected-symptoms-display">
-            <h4><i class="fa-solid fa-clipboard-list"></i> Your Symptoms:</h4>
-            <div class="symptom-tags">
-                ${selectedSymptoms.map(s => `<span class="symptom-tag">${formatSymptomName(s)}</span>`).join('')}
-            </div>
-        </div>
-        
-        <div class="results-grid">
     `;
     
     results.forEach((result, index) => {
@@ -366,43 +408,61 @@ function renderResults(results, selectedSymptoms) {
             urgency: 'low'
         };
         
-        // Determine confidence level
+        // Determine confidence level and urgency based on Match Confidence %
         let confidenceClass = 'low';
         let confidenceLabel = 'Low Match';
+        let urgencyLevel = 'low';
         if (confidence >= 70) {
             confidenceClass = 'high';
             confidenceLabel = 'High Match';
+            urgencyLevel = 'high';
         } else if (confidence >= 50) {
             confidenceClass = 'medium';
             confidenceLabel = 'Moderate Match';
+            urgencyLevel = 'medium';
         }
         
         html += `
-            <div class="result-card" style="animation-delay: ${index * 0.1}s; --accent-color: ${info.color}">
-                <div class="card-header-section">
-                    <div class="disease-icon" style="background: ${info.color}20; color: ${info.color}">
+            <div class="condition-card" style="border-left-color: ${info.color}">
+                <div class="card-rank">
+                    <span class="rank-badge">#${index + 1}</span>
+                </div>
+                <div class="condition-card-header">
+                    <div class="condition-icon" style="background: ${info.color}20; color: ${info.color}">
                         <i class="${info.icon}"></i>
                     </div>
-                    <div class="disease-info">
-                        <h3 class="disease-name">${info.name}</h3>
-                        ${info.urgency === 'high' ? '<span class="urgency-badge"><i class="fa-solid fa-exclamation-triangle"></i> Seek Medical Attention</span>' : ''}
-                    </div>
-                    <div class="confidence-badge ${confidenceClass}">
-                        <div class="confidence-value">${confidence.toFixed(1)}%</div>
-                        <div class="confidence-label">${confidenceLabel}</div>
+                    <div class="condition-title">
+                        <h3>${info.name}</h3>
+                        ${urgencyLevel === 'high' ? `<span class="urgency-badge urgency-${urgencyLevel}"><i class="fa-solid fa-exclamation-triangle"></i> High Priority</span>` : ''}
                     </div>
                 </div>
                 
-                <div class="confidence-bar-container">
-                    <div class="confidence-bar ${confidenceClass}" style="width: ${confidence}%"></div>
+                <p class="condition-description">${info.description}</p>
+                
+                <div class="condition-details">
+                    <div class="detail-item">
+                        <div class="detail-item-label">Match Confidence</div>
+                        <div class="detail-item-value">
+                            <div class="symptom-match-rate">
+                                <div class="match-bar">
+                                    <div class="match-fill" style="width: ${confidence}%"></div>
+                                </div>
+                                <span class="match-percentage">${confidence.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-item-label">Urgency Level</div>
+                        <div class="detail-item-value">
+                            <span class="urgency-badge urgency-${urgencyLevel}">${urgencyLevel.charAt(0).toUpperCase() + urgencyLevel.slice(1)}</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <p class="disease-description">${info.description}</p>
-                
-                <div class="card-footer-section">
-                    <div class="match-info">
-                        <i class="fa-solid fa-chart-simple"></i>
-                        Symptom match confidence
+                <div class="recommendations">
+                    <div class="recommendations-label">Recommendation</div>
+                    <div class="recommendations-text">
+                        Consult a healthcare professional for proper diagnosis and treatment.
                     </div>
                 </div>
             </div>
@@ -411,19 +471,9 @@ function renderResults(results, selectedSymptoms) {
     
     html += `
         </div>
-        
-        <div class="disclaimer-footer">
-            <i class="fa-solid fa-info-circle"></i>
-            <p><strong>Important:</strong> This analysis is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider.</p>
-        </div>
     `;
     
     container.innerHTML = html;
-    
-    // Scroll to results on mobile
-    if (window.innerWidth < 900) {
-        container.scrollIntoView({ behavior: 'smooth' });
-    }
 }
 
 // Helper functions

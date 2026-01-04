@@ -20,21 +20,16 @@
             <h1>MediDiagnose</h1>
         </div>
 
-        <div class="disclaimer">
-            <i class="fa-solid fa-circle-info"></i>
-            <span>This is a demonstration system. Always consult a healthcare professional for medical advice.</span>
-        </div>
-
         <div id="symptomForm">
-            <h3 class="section-title">Select Your Symptoms</h3>
+            <h3 class="section-title">Select Symptoms</h3>
 
-            <!-- General Symptoms -->
-            <div class="symptom-category">
-                <div class="category-header">
-                    <i class="fa-solid fa-user"></i>
-                    <span>General Symptoms</span>
-                </div>
-                <div class="checkbox-group">
+                <!-- General Symptoms -->
+                <div class="symptom-category">
+                    <div class="category-header">
+                        <i class="fa-solid fa-user"></i>
+                        <span>General Symptoms</span>
+                    </div>
+                    <div class="checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" name="symptom" value="fatigue">
                         <span class="checkmark"></span>
@@ -373,19 +368,19 @@
                 </div>
             </div>
 
-            <div class="selected-count" id="selectedCount">
-                <i class="fa-solid fa-check-circle"></i>
-                <span>0 symptoms selected</span>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <button id="diagnoseBtn" class="btn-primary" onclick="runDiagnosis()" style="flex: 2;">
-                    <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Symptoms
+            <div style="display: flex; gap: 8px;">
+                <button id="diagnoseBtn" class="btn-primary" onclick="runDiagnosis()">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze
                 </button>
-                <button class="btn-primary btn-secondary" onclick="resetForm()" style="flex: 1;">
+                <button class="btn-primary btn-secondary" onclick="resetForm()" title="Reset">
                     <i class="fa-solid fa-rotate-right"></i>
                 </button>
             </div>
+        </div>
+
+        <div class="selected-count" id="selectedCount">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>0 selected</span>
         </div>
     </aside>
 
@@ -395,7 +390,7 @@
         <div class="hero-text" id="initialState">
             <i class="fa-solid fa-heartbeat"></i>
             <h2>Medical Symptom Analyzer</h2>
-            <p>Select your symptoms from the checklist on the left and let our expert system analyze potential conditions.</p>
+            <p>Select your symptoms from the left panel and click analyze to discover potential conditions.</p>
         </div>
 
         <!-- Dynamic Content will be injected here -->

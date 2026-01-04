@@ -375,23 +375,8 @@ function renderResults(results, selectedSymptoms, patientInfo) {
         }
     };
     
-    // Sort results by confidence (highest first)
+    // Sort results by confidence (highest to lowest)
     results.sort((a, b) => {
-        const diseaseA = a.disease;
-        const diseaseB = b.disease;
-        
-        const infoA = diseaseInfo[diseaseA] || { urgency: 'low' };
-        const infoB = diseaseInfo[diseaseB] || { urgency: 'low' };
-        
-        // First sort by urgency (high > medium > low)
-        const urgencyOrder = { high: 3, medium: 2, low: 1 };
-        const urgencyDiff = (urgencyOrder[infoB.urgency] || 0) - (urgencyOrder[infoA.urgency] || 0);
-        
-        if (urgencyDiff !== 0) {
-            return urgencyDiff;
-        }
-        
-        // Then sort by confidence (highest first)
         return b.confidence - a.confidence;
     });
     

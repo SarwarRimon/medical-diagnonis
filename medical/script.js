@@ -75,6 +75,15 @@ function runDiagnosis() {
     const checkboxes = document.querySelectorAll('input[name="symptom"]:checked');
     const symptoms = Array.from(checkboxes).map(cb => cb.value);
     
+    // Gather patient information
+    const patientInfo = {
+        name: document.getElementById('patientName').value || 'Not Provided',
+        age: document.getElementById('patientAge').value || 'Not Provided',
+        gender: document.getElementById('patientGender').value || 'Not Provided',
+        email: document.getElementById('patientEmail').value || 'Not Provided',
+        phone: document.getElementById('patientPhone').value || 'Not Provided'
+    };
+    
     // Validate
     if (symptoms.length === 0) {
         alert("Please select at least one symptom.");
@@ -118,7 +127,7 @@ function runDiagnosis() {
         if (!data.results || data.results.length === 0) {
             renderNoResults();
         } else {
-            renderResults(data.results, symptoms);
+            renderResults(data.results, symptoms, patientInfo);
         }
         
         btn.disabled = false;
@@ -155,7 +164,7 @@ function renderError(message) {
     `;
 }
 
-function renderResults(results, selectedSymptoms) {
+function renderResults(results, selectedSymptoms, patientInfo) {
     const container = document.getElementById("dynamicContent");
     
     // Disease metadata for display
@@ -388,6 +397,33 @@ function renderResults(results, selectedSymptoms) {
     
     let html = `
         <div class="results-container">
+            <!-- PATIENT INFORMATION CARD -->
+            <div class="patient-info-card">
+                <h3><i class="fa-solid fa-user-doctor"></i> Patient Information</h3>
+                <div class="patient-details">
+                    <div class="patient-detail">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value">${patientInfo.name}</span>
+                    </div>
+                    <div class="patient-detail">
+                        <span class="detail-label">Age:</span>
+                        <span class="detail-value">${patientInfo.age}</span>
+                    </div>
+                    <div class="patient-detail">
+                        <span class="detail-label">Gender:</span>
+                        <span class="detail-value">${patientInfo.gender}</span>
+                    </div>
+                    <div class="patient-detail">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">${patientInfo.email}</span>
+                    </div>
+                    <div class="patient-detail">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">${patientInfo.phone}</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="results-summary">
                 <h3>Analysis Results</h3>
                 <p>Found <strong>${results.length}</strong> potential condition${results.length > 1 ? 's' : ''} based on your <strong>${selectedSymptoms.length}</strong> symptom${selectedSymptoms.length > 1 ? 's' : ''}</p>

@@ -20,6 +20,38 @@
             <h1>MediDiagnose</h1>
         </div>
 
+        <!-- PATIENT INFORMATION FORM -->
+        <div class="patient-info-section">
+            <h3 class="section-title">Patient Information</h3>
+            <div class="patient-form">
+                <div class="form-group">
+                    <label for="patientName">Name</label>
+                    <input type="text" id="patientName" placeholder="Full Name" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="patientAge">Age</label>
+                    <input type="number" id="patientAge" placeholder="Age" class="form-input" min="0" max="120">
+                </div>
+                <div class="form-group">
+                    <label for="patientGender">Gender</label>
+                    <select id="patientGender" class="form-input">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="patientEmail">Email</label>
+                    <input type="email" id="patientEmail" placeholder="Email Address" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">Phone</label>
+                    <input type="tel" id="patientPhone" placeholder="Phone Number" class="form-input">
+                </div>
+            </div>
+        </div>
+
         <div id="symptomForm">
             <h3 class="section-title">Select Symptoms</h3>
 

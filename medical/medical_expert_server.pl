@@ -76,8 +76,13 @@ diagnose_handler(Request) :-
     findall(
         _{disease: Disease, confidence: Confidence},
         diagnose(Disease, Confidence),
-        Results
+        AllResults
     ),
+    
+    % Sort by confidence descending and take top 5
+    sort_by_confidence(AllResults, SortedResults),
+    length(SortedResults, TotalCount),
+    (TotalCount > 5 -> length(Results, 5), append(Results, _, SortedResults) ; Results = SortedResults),
     
     format(user_error, '📤 Diagnosis results: ~w~n~n', [Results]),
     clear_patient_data,
@@ -119,6 +124,11 @@ assert_symptoms([Symptom|Rest]) :-
     atom_string(SymptomAtom, Symptom),
     assertz(patient_symptom(SymptomAtom)),
     assert_symptoms(Rest).
+
+% Sort results by confidence in descending order
+sort_by_confidence(Results, Sorted) :-
+    msort(Results, TempSorted),
+    reverse(TempSorted, Sorted).
 
 /* -----------------------------------------------------
    MEDICAL KNOWLEDGE BASE

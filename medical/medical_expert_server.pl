@@ -46,6 +46,7 @@ start_server(Port) :-
 :- http_handler(root(diagnose), diagnose_handler, [cors]).
 :- http_handler(root(symptoms), symptoms_handler, [cors]).
 :- http_handler(root(health), health_handler, [cors]).
+:- http_handler(root(disease_details), disease_details_handler, [cors]).
 
 /* -----------------------------------------------------
    STATIC FILE HANDLER
@@ -111,6 +112,52 @@ symptoms_handler(_Request) :-
         ok: true,
         symptoms: Symptoms
     }).
+
+/* -----------------------------------------------------
+   DISEASE DETAILS HANDLER
+   ----------------------------------------------------- */
+
+disease_details_handler(Request) :-
+    http_read_json_dict(Request, Data),
+    
+    % Extract disease name and selected symptoms
+    DiseaseName = Data.disease,
+    SelectedSymptoms = Data.symptoms,
+    
+    % Convert disease name to atom
+    atom_string(DiseaseAtom, DiseaseName),
+    
+    % Get disease requirements
+    (disease(DiseaseAtom, RequiredSymptoms) ->
+        % Convert selected symptoms to atoms
+        findall(S, (member(S_str, SelectedSymptoms), atom_string(S, S_str)), SelectedAtoms),
+        
+        % Find matched symptoms
+        findall(S, (member(S, RequiredSymptoms), member(S, SelectedAtoms)), MatchedSymptoms),
+        
+        % Find missing symptoms
+        findall(S, (member(S, RequiredSymptoms), \+ member(S, SelectedAtoms)), MissingSymptoms),
+        
+        % Find contradicting symptoms (selected but not in disease requirements)
+        findall(S, (member(S, SelectedAtoms), \+ member(S, RequiredSymptoms)), ContradictingSymptoms),
+        
+        % Format symptoms
+        MatchedFormatted = MatchedSymptoms,
+        MissingFormatted = MissingSymptoms,
+        ContradictingFormatted = ContradictingSymptoms,
+        
+        reply_json_dict(_{
+            disease: DiseaseName,
+            matched_symptoms: MatchedFormatted,
+            missing_symptoms: MissingFormatted,
+            contradicting_symptoms: ContradictingFormatted
+        })
+    ;
+        reply_json_dict(_{
+            error: "Disease not found",
+            disease: DiseaseName
+        }, [status(404)])
+    ).
 
 /* -----------------------------------------------------
    HELPER PREDICATES
